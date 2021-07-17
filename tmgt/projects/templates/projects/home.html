@@ -1,0 +1,17 @@
+{% extends "projects/base.html" %}
+<head>
+    {% block head %}
+        <title>Projects</title>
+    {% endblock head %}
+</head>
+<body>
+    {% block content %}
+    <h1>Project Home</h1>
+    <a href="{% url 'logout' %}">Logout</a>
+    {% for project in projects %}
+        <h2>{{ project.title }}</h2>
+        <p>By: {{ project.author }} on {{ project.date_posted|date:"F d, Y" }}</p>
+        <p>About This Project: {{ project.about }}</p>
+    {% endfor %}
+    {% endblock content %}
+</body>
