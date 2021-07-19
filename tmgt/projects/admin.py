@@ -4,3 +4,4 @@ from .models import Projects
 # Register your models here.
 
 admin.site.register(Projects)
+# admin.site.register(Tasks)

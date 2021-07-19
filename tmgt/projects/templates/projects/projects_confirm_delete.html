@@ -1,0 +1,22 @@
+{% extends "projects/base.html" %}
+<head>
+    {% block head %}
+        <title>Delete Project</title>
+    {% endblock head %}
+</head>
+<body>
+    {% block content %}
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom-mb-4">Delete Project?</legend>
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+                    <a class="btn btn-outline-secondary" href="{% url 'projects-detail' object.id %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    {% endblock content %}
+</body>
