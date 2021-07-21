@@ -18,6 +18,19 @@ class Projects(models.Model):
     def get_absolute_url(self):
         return reverse('projects-detail', kwargs={'pk': self.pk})
 
-# class Tasks(models.Model):
-#     about = models.TextField(max_length=100)
-#     deadline = models.DateField(null=True,blank=True)
+TASK_CHOICES = (("Complete", "Complete"),
+                ("Incomplete", "Incomplete")
+                )
+
+class Tasks(models.Model):
+    desc = models.TextField(max_length=100)
+    deadline = models.DateField(null=True,blank=True)
+    status = models.CharField(max_length=10,choices=TASK_CHOICES, default="Incomplete")
+    projects = models.ForeignKey(Projects, related_name='projects', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.pk)
+
+    def get_absolute_url(self):
+        return reverse('projects-detail', kwargs={'pk': self.pk})

@@ -11,13 +11,25 @@
         <a href="{% url 'logout' %}">Logout</a>
         <a href="{% url 'profile' %}">Profile</a>
         <a href="{% url 'projects-home' %}">Project List</a>
+        <a href="{% url 'tasks-create' object.id %}">Add a Task</a>
     {% endif %}
 
         <h2>{{ object.title }}</h2>
         <p>By: {{ object.author }} on {{ object.date_posted|date:"F d, Y" }}</p>
         <p>About This Project: {{ object.about }}</p>
         <a class="btn btn-outline-secondary" href="{% url 'projects-update' object.id %}">Update</a>
-        <a class="btn btn-outline-danger" href="{% url 'projects-delete' object.id %}">Delete</a>
+        <a class="btn btn-outline-danger" href="{% url 'projects-delete' object.id%}">Delete</a>
+
+    <h2>Tasks</h2>
+
+        {% for task in tasks %}
+        <p>To do: {{ task.desc }}</p>
+        <p>Deadline: {{ task.deadline|date:"F d, Y" }}</p>
+        <p>Status: {{ task.status }}
+            <a class="btn btn-outline-secondary" href="{% url 'tasks-update' object.id %}">Edit</a>
+            <a class="btn btn-outline-danger" href="{% url 'tasks-delete' task.pk %}">Delete</a>
+        </p>
+        {% endfor %}
 
     {% endblock content %}
 </body>
