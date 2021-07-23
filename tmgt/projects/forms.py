@@ -13,3 +13,9 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Tasks
         fields = ['desc', 'deadline', 'status']
+
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields['desc'].label = "Description"
+        self.fields['deadline'].label = "Deadline"
+        self.fields['status'].label = "Status"
