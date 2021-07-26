@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'diary.apps.DiaryConfig',
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'crispy_forms',

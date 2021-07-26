@@ -1,0 +1,24 @@
+{% extends "projects/base.html" %}
+<head>
+    {% block head %}
+        <title>Entry Details</title>
+    {% endblock head %}
+</head>
+<body>
+    {% block content %}
+    <h1>Entry Details</h1>
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="{% url 'projects-home' %}">Project List</a>
+        <a href="{% url 'diary-home' user.id %}">Back to Diary</a>
+    {% endif %}
+
+        <h2>{{ object.title }}</h2>
+        <p>{{ object.date|date:"F d, Y" }}</p>
+        <p>Entry: {{ object.content }}</p>
+        <a class="btn btn-outline-secondary" href="{% url 'entry-update' object.id %}">Update</a>
+        <a class="btn btn-outline-danger" href="{% url 'entry-delete' object.id%}">Delete</a>
+
+    {% endblock content %}
+</body>

@@ -23,6 +23,7 @@ class ProjectsListView(ListView):
     context_object_name = 'projects'
     ordering = ['progress']
 
+
 class ProjectsDetailView(DetailView):
     model = Projects
 
