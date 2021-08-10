@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.utils import timezone as tz
 from datetime import date
@@ -23,8 +24,11 @@ class EntryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        todays_entry = Entry.objects.get(date=date.today())
-        context['todays_entry'] = todays_entry
+        try:
+            todays_entry = Entry.objects.get(date=date.today())
+            context['todays_entry'] = todays_entry
+        except ObjectDoesNotExist:
+            context['todays_entry'] = None
         return context
 
 class EntryCreateView(LoginRequiredMixin,CreateView):
