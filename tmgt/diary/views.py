@@ -24,11 +24,8 @@ class EntryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            todays_entry = Entry.objects.get(date=date.today())
-            context['todays_entry'] = todays_entry
-        except ObjectDoesNotExist:
-            context['todays_entry'] = None
+        todays_entry = Entry.objects.filter(date__date=date.today()).order_by('-date__hour','-date__minute')
+        context['todays_entry'] = todays_entry
         return context
 
 class EntryCreateView(LoginRequiredMixin,CreateView):

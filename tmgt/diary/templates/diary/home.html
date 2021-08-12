@@ -6,11 +6,12 @@
 </head>
 <body>
     {% block content %}
-    <h1>Your Diary</h1>
+    <h1>Today's Entries</h1>
     {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">Logout</a>
         <a href="{% url 'profile' %}">Profile</a>
         <a href="{% url 'projects-home' %}">Project List</a>
+        <a href="{% url 'entry-create'%}">Write an Entry</a>
 
     {% endif %}
 
@@ -18,20 +19,19 @@
         <p>No entries for today.</p>
         <a class="btn btn-outline-secondary" href="{% url 'entry-create'%}">Write an Entry</a>
     {% else %}
-        <h2>{{ todays_entry.title }}</h2>
-        <p>{{ todays_entry.content }}</p>
-        <a class="btn btn-outline-secondary" href="{% url 'entry-update' todays_entry.id %}">Update</a>
-        <a class="btn btn-outline-danger" href="{% url 'entry-delete' todays_entry.id %}">Delete</a>
+    {% for entry in todays_entry %}
+        <h2>{{ entry.title }}</h2>
+        <p>{{ entry.date|date }}, {{ entry.date|time }}</p>
+        <p>{{ entry.content }}</p>
+        <a class="btn btn-outline-secondary" href="{% url 'entry-update' entry.id %}">Update</a>
+        <a class="btn btn-outline-danger" href="{% url 'entry-delete' entry.id %}">Delete</a>
+    {% endfor %}
     {% endif %}
 
     <h2>Entries</h2>
 
         {% for entry in entries %}
-        <p>Entry on: {{ entry.date|date:"F d, Y" }}</p>
-        <p>
-            <a class="btn btn-outline-secondary" href="{% url 'entry-update' entry.id %}">Edit</a>
-            <a class="btn btn-outline-danger" href="{% url 'entry-delete' entry.id %}">Delete</a>
-        </p>
+        <p><a href="{% url 'entry-detail' entry.id %}">Entry on: {{ entry.date|date:"F d, Y" }}</a></p>
         {% endfor %}
 
     {% endblock content %}
