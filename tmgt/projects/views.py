@@ -160,10 +160,11 @@ class CommentNotifs(View):
     def get(self, request, notif_pk, project_pk, *args, **kwargs):
         notif = Notification.objects.get(pk=notif_pk)
         comment = Comment.objects.get(pk=project_pk)
+        notif.projects = Projects.objects.get(pk=project_pk)
 
         notif.notif_seen = True
         notif.save()
-        return redirect('projects-detail', comment.projects.pk)
+        return redirect('projects-detail', notif.projects.pk)
 
 def home(request):
     context = {

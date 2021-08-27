@@ -9,7 +9,7 @@
         {% for notif in notifs %}
             {% if notif.notif_type == 1 %}
 
-                    <a class="dropdown-item" href="{% url 'task-notif' notif.pk notif.task.pk %}">You have tasks due today!</a>
+                    <a class="dropdown-item" href="{% url 'task-notif' notif.pk notif.task.projects.pk %}">You have tasks due today!</a>
 
             {% elif notif.notif_type == 2 %}
 
