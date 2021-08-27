@@ -7,7 +7,8 @@ from .views import (
     ProjectsDeleteView,
     TasksUpdateView,
     TasksDeleteView,
-    TaskNotifs
+    TaskNotifs,
+    CommentNotifs
 )
 from projects import views as project_views
 
@@ -22,5 +23,7 @@ urlpatterns = [
     path('<int:pk>/add-task', project_views.addTask, name="tasks-create"),
     path('<int:pk>/tasks/update/',TasksUpdateView.as_view(),name='tasks-update'),
     path('<int:pk>/tasks/delete/',TasksDeleteView.as_view(),name='tasks-delete'),
-    path('notification/<int:notif_pk>/task/<int:task_pk>', TaskNotifs.as_view(), name='task-notif')
+    path('notification/<int:notif_pk>/task/<int:task_pk>', TaskNotifs.as_view(), name='task-notif'),
+    path('<int:pk>/write-comment', project_views.write_comment, name="comment-create"),
+    path('notification/<int:notif_pk>/comment/<int:project_pk>', CommentNotifs.as_view(), name='comment-notif'),
 ]

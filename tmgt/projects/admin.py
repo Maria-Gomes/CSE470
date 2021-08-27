@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Projects, Tasks
+from .models import Projects, Tasks, Comment
 #, Comment, WorkSpace
 
 # Register your models here.
@@ -7,4 +7,4 @@ from .models import Projects, Tasks
 admin.site.register(Projects)
 admin.site.register(Tasks)
 # admin.site.register(WorkSpace)
-# admin.site.register(Comment)
+admin.site.register(Comment)

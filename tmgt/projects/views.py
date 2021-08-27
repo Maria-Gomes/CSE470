@@ -1,15 +1,14 @@
 from datetime import datetime, date
-
 from django.http import HttpResponse
 from django.shortcuts import render, HttpResponseRedirect, reverse, get_object_or_404, redirect
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from .models import Projects, Tasks
+from .models import Projects, Tasks, Comment
 from users.models import Notification
 from cal.models import Event
-from .forms import TaskForm
+from .forms import TaskForm, CommentForm
 from django.db.models import F
 from django.views.generic import (
     ListView,
@@ -34,6 +33,7 @@ class ProjectsListView(ListView):
         now = datetime.now()
         tasks = Tasks.objects.filter(user=self.request.user, status='Incomplete', deadline=date.today())
         events = Event.objects.filter(e_user=self.request.user, date=date.today())
+        comments = Comment.objects.filter(user_to=self.request.user)
 
         for task in tasks:
             time = task.submit_time.hour-2
@@ -55,6 +55,13 @@ class ProjectsListView(ListView):
                 if len(existing_notif) == 0:
                     notif = Notification.objects.create(notif_type=2, to_user=self.request.user, event=event)
 
+        for comment in comments:
+            existing_notif = Notification.objects.filter(notif_type=3, to_user=self.request.user,
+                                                         from_user=comment.user_from, projects=comment.projects)
+            if len(existing_notif) == 0:
+                notif = Notification.objects.create(notif_type=3, to_user=self.request.user,
+                                                    from_user=comment.user_from, projects=comment.projects)
+
         return context
 
 class ProjectsDetailView(DetailView):
@@ -64,6 +71,8 @@ class ProjectsDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['tasks'] = Tasks.objects.filter(projects=self.object)
         context['t_form'] = TaskForm()
+        context['comments'] = Comment.objects.filter(projects=self.object)
+        context['c_form'] = CommentForm()
         return context
 
 
@@ -147,6 +156,15 @@ class TaskNotifs(View):
         return redirect('projects-detail', task.projects.pk)
 
 
+class CommentNotifs(View):
+    def get(self, request, notif_pk, project_pk, *args, **kwargs):
+        notif = Notification.objects.get(pk=notif_pk)
+        comment = Comment.objects.get(pk=project_pk)
+
+        notif.notif_seen = True
+        notif.save()
+        return redirect('projects-detail', comment.projects.pk)
+
 def home(request):
     context = {
         'projects': Projects.objects.all()
@@ -170,16 +188,18 @@ def addTask(request, pk):
     return HttpResponseRedirect(reverse("projects-detail", kwargs={"pk": pk}))
 
 
-# @login_required(login_url='/')
-# def write_comment(request, pk):
-#     c_form = CommentForm(request.POST)
-#     if c_form.is_valid():
-#         comment = c_form.save(commit=False)
-#         comment.user = request.user
-#         comment.project = Projects.objects.get(pk=pk)
-#         comment.save()
-#
-#     else:
-#         c_form = CommentForm()
-#
-#     return HttpResponseRedirect(reverse("project-detail", kwargs = { "pk":pk }))
+@login_required(login_url='/')
+def write_comment(request, pk):
+    c_form = CommentForm(request.POST)
+    if c_form.is_valid():
+        comment = c_form.save(commit=False)
+        comment.user_from = request.user
+        projects = Projects.objects.get(pk=pk)
+        comment.user_to = projects.author
+        comment.projects = projects
+        comment.save()
+
+    else:
+        c_form = CommentForm()
+
+    return HttpResponseRedirect(reverse("projects-detail", kwargs = { "pk":pk }))

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tasks
+from .models import Tasks, Comment
 
 TASK_CHOICES = (("Complete", "Complete"),
                 ("Incomplete", "Incomplete")
@@ -22,13 +22,13 @@ class TaskForm(forms.ModelForm):
         self.fields['status'].label = "Status"
 
 
-# class CommentForm(forms.ModelForm):
-#     body = forms.CharField(max_length=500)
-#
-#     class Meta:
-#         model = Comment
-#         fields = ['body']
-#
-#     def __init__(self, *args, **kwargs):
-#         super(CommentForm, self).__init__(*args, **kwargs)
-#         self.fields['body'].label = "Write a Comment"
+class CommentForm(forms.ModelForm):
+    body = forms.CharField(max_length=500)
+
+    class Meta:
+        model = Comment
+        fields = ['body']
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['body'].label = "Write a Comment"

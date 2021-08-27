@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from projects.models import Tasks
+from projects.models import Tasks, Comment, Projects
 from cal.models import Event
 
 # Create your models here.
@@ -18,7 +18,10 @@ class Notification(models.Model):
     #1.Task Deadline 2.Event 3.Comment
     notif_type = models.IntegerField()
     to_user = models.ForeignKey(User, related_name= "notif_to", on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name="notif_from", on_delete=models.CASCADE, null=True, blank=True)
     task = models.ForeignKey(Tasks, on_delete=models.CASCADE, null=True, blank=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
+    projects = models.ForeignKey(Projects, on_delete=models.CASCADE, null=True, blank=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateTimeField(default=timezone.now)
     notif_seen = models.BooleanField(default=False)

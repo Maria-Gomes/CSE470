@@ -40,12 +40,13 @@ class Tasks(models.Model):
 # class WorkSpace(models.Model):
 #     project = models.OneToOneField(Projects, on_delete=models.CASCADE)
 #     members = models.ManyToManyField(User)
-#
-# class Comment(models.Model):
-#     workspace = models.ForeignKey(WorkSpace, related_name="comment", on_delete=models.CASCADE)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     body = models.CharField(max_length=500)
-#     date = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return '%s - %s' % (self.project.title, self.user)
+
+class Comment(models.Model):
+    projects = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    user_from = models.ForeignKey(User, related_name="user_from", on_delete=models.CASCADE, null=True, blank=True)
+    user_to = models.ForeignKey(User, related_name="user_to", on_delete=models.CASCADE, null=True, blank=True)
+    body = models.CharField(max_length=500)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s - %s' % (self.projects.title, self.user_to)

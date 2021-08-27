@@ -1,10 +1,10 @@
 {% extends "projects/base.html" %}
 {% load crispy_forms_tags %}
-{% load static %}
+<!--{% load static %}-->
 
 <head>
     {% block head %}
-        <link rel="stylesheet" href="{% static 'cal/css/style.css' %}">
+<!--        <link rel="stylesheet" type="text/css" href="{% static 'cal/css/style.css' %}">-->
         <title>Calendar</title>
     {% endblock head %}
 </head>
@@ -12,7 +12,7 @@
     {% block content %}
     <h1 class="ml-3 mb-2">Events and Deadlines</h1>
 
-    <div class="ml-5 mr-3 mb-2 calendar float-right" id="cal">
+    <div class="ml-5 mr-3 mb-2 calendar float-right" style="background-color: #301934; color:white;">
         {{ cal|safe }}
     </div>
 
