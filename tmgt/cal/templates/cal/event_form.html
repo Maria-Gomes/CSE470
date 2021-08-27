@@ -1,0 +1,28 @@
+{% extends "projects/base.html" %}
+{% load crispy_forms_tags %}
+<head>
+    {% block head %}
+        <title>Submit Event Info</title>
+    {% endblock head %}
+</head>
+<body>
+    {% block content %}
+        <div class="content-section ml-3">
+            <form class="w-100" method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom-mb-4">Event Details</legend>
+                    {{ e_form | crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Submit!</button>
+                    {% if not object.id %}
+                    <a class="btn btn-outline-secondary" href="{% url 'calendar-home' user.id %}">Cancel</a>
+                    {% else %}
+                    <a class="btn btn-outline-secondary" href="{% url 'event-detail' object.id %}">Cancel</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    {% endblock content %}
+</body>

@@ -1,0 +1,29 @@
+.badge:hover {
+    cursor: pointer;
+    opacity:0.75;
+    transition: 0.3;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content{
+    position: absolute;
+    min-width: 300px
+}
+
+#dropdownMenuButton {
+ background-color: #301934;
+}
+
+.dropdown-item-close {
+    position: absolute;
+    top:0
+    right:0
+}
+
+.dropdown-menu{
+    position:relative;
+}

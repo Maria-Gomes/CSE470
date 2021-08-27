@@ -1,0 +1,20 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{ notifs.count }}
+  </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for notif in notifs %}
+            {% if notif.notif_type == 1 %}
+
+                    <a class="dropdown-item" href="{% url 'task-notif' notif.pk notif.task.pk %}">You have tasks due today!</a>
+
+            {% elif notif.notif_type == 2 %}
+
+                    <a class="dropdown-item" href="{% url 'event-notif' notif.pk notif.event.pk %}">{{ notif.event.name }} at {{ notif.event.start_t }}</a>
+
+            {% endif %}
+        {% endfor %}
+    </div>

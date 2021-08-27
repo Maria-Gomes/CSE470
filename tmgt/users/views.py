@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from .forms import UserRegisterForm, UserUpdateForm
+from .models import Notification
 
 # Create your views here.
 
@@ -33,3 +35,10 @@ def profile(request):
     }
 
     return render(request, 'users/profile.html',context)
+
+@login_required
+def logout_view(request):
+    Notification.objects.filter(to_user=request.user, notif_seen=True).delete()
+    logout(request)
+
+    return redirect('login')

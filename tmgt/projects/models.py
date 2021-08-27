@@ -25,6 +25,7 @@ TASK_CHOICES = (("Complete", "Complete"),
 class Tasks(models.Model):
     desc = models.TextField(max_length=100)
     deadline = models.DateField(null=True,blank=True)
+    submit_time = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=10,choices=TASK_CHOICES, default="Incomplete")
     projects = models.ForeignKey(Projects, related_name='projects', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -34,3 +35,17 @@ class Tasks(models.Model):
 
     def get_absolute_url(self):
         return reverse('projects-detail', kwargs={'projects': self.projects})
+
+
+# class WorkSpace(models.Model):
+#     project = models.OneToOneField(Projects, on_delete=models.CASCADE)
+#     members = models.ManyToManyField(User)
+#
+# class Comment(models.Model):
+#     workspace = models.ForeignKey(WorkSpace, related_name="comment", on_delete=models.CASCADE)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     body = models.CharField(max_length=500)
+#     date = models.DateTimeField(auto_now_add=True)
+#
+#     def __str__(self):
+#         return '%s - %s' % (self.project.title, self.user)
