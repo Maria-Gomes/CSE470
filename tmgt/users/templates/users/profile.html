@@ -7,7 +7,7 @@
 </head>
 <body>
     {% block content %}
-        <div class="content-section">
+        <div class="content-section ml-3 mb-2 mt-2" style="color:white; width:700px">
             <form method="POST">
                 {% csrf_token %}
                 <fieldset class="form-group">
@@ -15,7 +15,7 @@
                     {{ user_form|crispy }}
                 </fieldset>
                 <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Update</button>
+                    <button class="btn btn-outline-light" type="submit">Update</button>
                 </div>
             </form>
         </div>

@@ -33,6 +33,7 @@ class EventListView(ListView):
         now = datetime.now()
         cal = HTMLCalendar().formatmonth(now.year, now.month)
         context['cal'] = cal
+        context['events'] = Event.objects.filter(e_user=self.request.user, date__gte=now.date())
         tasks = Tasks.objects.filter(user=self.request.user, status="Incomplete", deadline__gte=now)
         context['tasks'] = tasks
         projects_id = []

@@ -7,7 +7,7 @@
 </head>
 <body>
     {% block content %}
-        <div class="content-section">
+        <div class="content-section ml-3 mb-2 mt-2" style="color:white; width:900px;">
             <form method="POST">
                 {% csrf_token %}
                 <fieldset class="form-group">
@@ -15,8 +15,8 @@
                     {{ t_form|crispy }}
                 </fieldset>
                 <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Submit!</button>
-                    <a class="btn btn-outline-secondary" href="#">Cancel</a>
+                    <button class="btn btn-outline-success" type="submit">Submit!</button>
+                    <a class="btn btn-outline-light" href="#">Cancel</a>
                 </div>
             </form>
         </div>

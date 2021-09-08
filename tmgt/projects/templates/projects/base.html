@@ -9,9 +9,9 @@
     <title>Base</title>
     {% endblock head %}
 </head>
-<body>
+<body style="background-color: black;">
 {% if user.is_authenticated %}
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #301934;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #421b2e;">
   <a class="navbar-brand" href="#">TMan</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -21,21 +21,41 @@
       <li class="nav-item">
           <a class="nav-link" href="{% url 'projects-home' %}">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'diary-home' user.id %}">Diary</a>
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Project
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'projects-create' %}">Create Project</a>
+          <a class="dropdown-item" href="{% url 'projects-home' %}">Project Home</a>
+        </div>
       </li>
-        <li class="nav-item">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'calendar-home' user.id %}">Calendar</a>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Diary
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'diary-home' user.id %}">Your Diary</a>
+          <a class="dropdown-item" href="{% url 'entry-create'%}">Write an Entry</a>
+        </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Calendar
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'calendar-home' user.id %}">Upcoming Deadlines</a>
+          <a class="dropdown-item" href="{% url 'event-create'%}">Add Event</a>
+        </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Profile
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
       </li>
     </ul>
       <div class="nav-item dropdown">

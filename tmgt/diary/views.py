@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from .models import Entry
+from .forms import EntryForm
 from django.views.generic import (
     ListView,
     CreateView,
@@ -24,7 +25,9 @@ class EntryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        todays_entry = Entry.objects.filter(date__date=date.today()).order_by('-date__hour','-date__minute')
+        context['entries'] = Entry.objects.filter(author=self.request.user)
+        todays_entry = Entry.objects.filter(author=self.request.user,date__date=date.today()).order_by('-date__hour','-date__minute')
+        print(todays_entry)
         context['todays_entry'] = todays_entry
         return context
 
@@ -67,3 +70,18 @@ class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def get_success_url(self):
         diary = self.object.diary_id
         return reverse_lazy('diary-home', args=(diary,))
+
+# def addEntry(request, pk):
+#
+#     if request.method == 'POST':
+#         entry_form = EntryForm(request.POST)
+#         if entry_form.is_valid():
+#             entry = entry_form.save(commit=False)
+#             entry.user = request.user
+#             entry.date = date.today()
+#             date.save()
+#
+#         else:
+#             t_form = TaskForm()
+#
+#     return HttpResponseRedirect(reverse("projects-detail", kwargs={"pk": pk}))

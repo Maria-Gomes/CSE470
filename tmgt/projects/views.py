@@ -30,6 +30,18 @@ class ProjectsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        projects = Projects.objects.filter(author=self.request.user)
+        context['projects'] = projects
+        inc_tasks = []
+        progress = []
+
+        for project in projects:
+            inc_tasks.append(Tasks.objects.filter(user=self.request.user, status='Incomplete', projects_id=project).count())
+            progress.append(get_progress(project.pk))
+
+        data = zip(inc_tasks, progress, projects)
+        context['data'] = data
+
         now = datetime.now()
         tasks = Tasks.objects.filter(user=self.request.user, status='Incomplete', deadline=date.today())
         events = Event.objects.filter(e_user=self.request.user, date=date.today())
@@ -69,7 +81,8 @@ class ProjectsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tasks'] = Tasks.objects.filter(projects=self.object)
+        tasks = Tasks.objects.filter(projects=self.object).order_by('-status')
+        context['tasks'] = tasks
         context['t_form'] = TaskForm()
         context['comments'] = Comment.objects.filter(projects=self.object)
         context['c_form'] = CommentForm()
@@ -110,7 +123,7 @@ class ProjectsDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class TasksUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Tasks
-    fields = ['desc', 'deadline', 'status', 'submit_time']
+    fields = ['desc', 'deadline', 'submit_time']
 
     def form_valid(self, t_form):
         t_form.instance.user = self.request.user
@@ -159,7 +172,6 @@ class TaskNotifs(View):
 class CommentNotifs(View):
     def get(self, request, notif_pk, project_pk, *args, **kwargs):
         notif = Notification.objects.get(pk=notif_pk)
-        comment = Comment.objects.get(pk=project_pk)
         notif.projects = Projects.objects.get(pk=project_pk)
 
         notif.notif_seen = True
@@ -204,3 +216,26 @@ def write_comment(request, pk):
         c_form = CommentForm()
 
     return HttpResponseRedirect(reverse("projects-detail", kwargs = { "pk":pk }))
+
+def completeTask(request, pk):
+    task = Tasks.objects.get(pk=pk)
+
+    if task.status == "Incomplete":
+        task.status = "Complete"
+    else:
+        task.status = "Incomplete"
+
+    task.save()
+
+    return HttpResponseRedirect(reverse("projects-detail", kwargs= { "pk":task.projects.pk }))
+
+def get_progress(project_pk):
+    tasks = Tasks.objects.filter(projects=project_pk).count()
+    if tasks == 0:
+        return 0.0
+    progress = (Tasks.objects.filter(projects=project_pk, status="Complete").count() / tasks) * 100
+    project = Projects.objects.get(pk=project_pk)
+    project.progress = progress
+    project.save()
+
+    return round(progress, 1)
