@@ -22,7 +22,7 @@ from django.views.generic import (
 
 # Create your views here.
 
-class ProjectsListView(ListView):
+class ProjectsListView(LoginRequiredMixin, ListView):
     model = Projects
     template_name = 'projects/home.html'
     context_object_name = 'projects'
@@ -217,6 +217,7 @@ def write_comment(request, pk):
 
     return HttpResponseRedirect(reverse("projects-detail", kwargs = { "pk":pk }))
 
+@login_required(login_url='/')
 def completeTask(request, pk):
     task = Tasks.objects.get(pk=pk)
 

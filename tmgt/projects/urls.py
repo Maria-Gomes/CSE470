@@ -13,7 +13,7 @@ from .views import (
 from projects import views as project_views
 
 urlpatterns = [
-    path('', ProjectsListView.as_view(), name='projects-home'),
+    path('home/', ProjectsListView.as_view(), name='projects-home'),
     path('<int:pk>/',ProjectsDetailView.as_view(), name= 'projects-detail'),
     path('new/',ProjectsCreateView.as_view(), name= 'projects-create'),
     path('<int:pk>/update/',ProjectsUpdateView.as_view(), name= 'projects-update'),

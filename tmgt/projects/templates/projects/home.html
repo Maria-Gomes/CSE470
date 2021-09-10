@@ -18,6 +18,7 @@
         <div class="col-6 border-bottom border-right" style="background-color: #421b2e;" id="content">
             <h2 id="title"><a href="{% url 'projects-detail' project.id %}">{{ project.title }}</a></h2>
             <p class="small muted" id="progress">Progress: {{ progress }}%</p>
+            <p>Created By: {{ project.author }}</p>
             <p id="about">{{ project.about }}</p>
             <p id="task_num">Tasks Left: {{ task_n }}</p>
         </div>

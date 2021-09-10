@@ -5,8 +5,7 @@ from .models import Entry
 
 class EntryForm(forms.ModelForm):
     title = forms.CharField(label="Title", max_length=30)
-    content = forms.CharField(label="Description",max_length=100)
-    date = forms.DateField(required=True)
+    content = forms.CharField(label="Description",max_length=100, widget=forms.Textarea)
 
     class Meta:
         model = Entry

@@ -1,4 +1,5 @@
 {% extends "projects/base.html" %}
+{% load crispy_forms_tags %}
 <head>
     {% block head %}
         <title>Your Diary</title>
@@ -10,20 +11,13 @@
         <div class="row">
             <div class="col-7 ml-3 mb-2">
     <h1 class="mt-2" style="color:white;">Today's Entries</h1>
-    {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'profile' %}">Profile</a>
-        <a href="{% url 'projects-home' %}">Project List</a>
-        <a href="{% url 'entry-create'%}">Write an Entry</a>
-
-    {% endif %}
 
     {% if not todays_entry %}
         <p class="ml-3 mb-2" style="color:white;">No entries for today.</p>
         <a class="btn btn-outline-secondary ml-3 mb-2" href="{% url 'entry-create'%}" style="color:white;">Write an Entry</a>
     {% else %}
     {% for entry in todays_entry %}
-        <h2 style="color:white;">{{ entry.title }}</h2>
+        <h2 class="mt-2 mb-2" style="color:white;">{{ entry.title }}</h2>
         <p style="color:white;">{{ entry.date|date }}, {{ entry.date|time }}</p>
         <p style="color:white;">{{ entry.content }}</p>
         <a class="btn btn-outline-light" href="{% url 'entry-update' entry.id %}">Edit</a>
@@ -31,7 +25,20 @@
     {% endfor %}
     {% endif %}
 </div>
-            <div class="col-4 ml-5">
+            <div class="col-4 ml-5 mt-3">
+                <h3 style="color:white;">Write an Entry</h3>
+                <div class="content-section mb-2 mt-2" style="color:white; width:500px;">
+            <form method="POST" action="{% url 'add-entry' user.id %}">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom-mb-4">Write Entry</legend>
+                    {{ entry_form | crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-success" type="submit">Submit!</button>
+                </div>
+            </form>
+        </div>
         <h2 style="color:white;">Entries</h2>
 
         {% for entry in entries %}
