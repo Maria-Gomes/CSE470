@@ -1,5 +1,5 @@
 # TMan
-CSE470 Time Management Web App
+Time and Task Management Web App
 Feature List:
 1.	Write notes and daily diary entries
 2.	Create To-Do/Task list
