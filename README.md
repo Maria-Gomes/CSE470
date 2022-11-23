@@ -1,4 +1,4 @@
-# CSE470
+# TMan
 CSE470 Time Management Web App
 Feature List:
 1.	Write notes and daily diary entries
